@@ -3,13 +3,13 @@ import Foundation
 import Vapor
 
 extension Request {
-  var dynamoDBClient: DynamoDBClient {
+  public var dynamoDBClient: DynamoDBClient {
     get async throws {
       return try await DynamoDBClient()
     }
   }
   
-  func getDynamoDbClient(region: String) throws -> DynamoDBClient {
+  public func getDynamoDbClient(region: String) throws -> DynamoDBClient {
     return try DynamoDBClient(region: region)
   }
 }
