@@ -51,7 +51,7 @@ public final class AppUtils {
     app.jwt.signers.use(.es256(key: publicKey), kid: "public", isDefault: true)
   }
 
-  func configurePrivateKey() throws {
+  public func configurePrivateKey() throws {
     guard let oneLinePrivateKeyString = Environment.get("PRIVATE_KEY") else {
       throw RuntimeError("PRIVATE_KEY not defined")
     }
