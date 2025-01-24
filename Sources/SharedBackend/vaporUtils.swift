@@ -42,3 +42,23 @@ extension Request {
   }
 }
 
+/// Expects `CORS_ORIGINS` to be defined as an env variable with the list of valid origins
+public func configureCors(_ app: Application) throws {
+  guard let corsOriginsString = Environment.get("CORS_ORIGINS") else {
+    throw RuntimeError("CORS_ORIGINS not defined")
+  }
+  let origins = corsOriginsString.split(separator: ",").map({ $0.trim() })
+  
+  let corsConfiguration = CORSMiddleware.Configuration(
+    allowedOrigin: .any(origins),
+    allowedMethods: [.GET, .POST, .PUT, .OPTIONS, .DELETE, .PATCH],
+    allowedHeaders: [
+      .accept, .authorization, .contentType, .origin, .xRequestedWith, .userAgent,
+      .accessControlAllowOrigin, .setCookie, .setCookie2,
+    ],
+    allowCredentials: true
+  )
+  let cors = CORSMiddleware(configuration: corsConfiguration)
+  // cors middleware should come before default error middleware using `at: .beginning`
+  app.middleware.use(cors, at: .beginning)
+}
