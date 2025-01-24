@@ -41,7 +41,7 @@ public final class AppUtils {
   }
 
   /// Expects `PUBLIC_KEY` to be defined as a env variable, new lines characters should be escaped as `\n`
-  func configurePublicKey() throws {
+  public func configurePublicKey() throws {
     guard let oneLinePublicKeyString = Environment.get("PUBLIC_KEY") else {
       throw RuntimeError("PUBLIC_KEY not defined")
     }
