@@ -17,6 +17,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git", from: "4.105.0"),
         .package(url: "https://github.com/awslabs/aws-sdk-swift", from: "1.0.69"),
+        .package(url: "https://github.com/vapor/jwt.git", from: "4.2.1"),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -25,6 +26,7 @@ let package = Package(
             name: "SharedBackend",
             dependencies: [
                 .product(name: "Vapor", package: "vapor"),
+                .product(name: "JWT", package: "jwt"),
                 // TODO: create different products with different dependencies
                 // this way we only import the "utils" we need without needless dependencies
                 .product(name: "AWSDynamoDB", package: "aws-sdk-swift"),
