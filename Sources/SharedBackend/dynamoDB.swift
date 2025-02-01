@@ -14,6 +14,16 @@ extension Request {
   }
 }
 
+public func getBoolFromAttribute(_ attribute: DynamoDBClientTypes.AttributeValue?) throws -> Bool {
+  guard let attribute else {
+    throw RuntimeError("attribute is null")
+  }
+  guard case .bool(let value) = attribute else {
+    throw RuntimeError("invalid attribute")
+  }
+  return value
+}
+
 public func getStringFromAttribute(_ attribute: DynamoDBClientTypes.AttributeValue?) throws -> String {
   guard let attribute else {
     throw RuntimeError("attribute is null")
