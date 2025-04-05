@@ -16,7 +16,7 @@ let package = Package(
   ],
   dependencies: [
     .package(url: "https://github.com/vapor/vapor.git", .upToNextMajor(from: "4.0.0")),
-    .package(url: "https://github.com/vapor/jwt.git", .upToNextMajor(from: "4.0.0")),
+    .package(url: "https://github.com/vapor/jwt.git", .upToNextMajor(from: "5.0.0")),
     .package(url: "https://github.com/awslabs/aws-sdk-swift", .upToNextMajor(from: "1.0.0")),
   ],
   targets: [

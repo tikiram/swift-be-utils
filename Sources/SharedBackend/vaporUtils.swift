@@ -41,23 +41,27 @@ public final class AppUtils {
   }
 
   /// Expects `PUBLIC_KEY` to be defined as a env variable, new lines characters should be escaped as `\n`
-  public func configurePublicKey() throws {
+  public func configurePublicKey() async throws {
     guard let oneLinePublicKeyString = Environment.get("PUBLIC_KEY") else {
       throw RuntimeError("PUBLIC_KEY not defined")
     }
 
     let publicKeyString = oneLinePublicKeyString.replacingOccurrences(of: "\\n", with: "\n")
-    let publicKey = try ECDSAKey.public(pem: publicKeyString)
-    app.jwt.signers.use(.es256(key: publicKey), kid: "public", isDefault: true)
+    
+    // ECDSA - es256
+    let publicKey = try ES256PublicKey(pem: publicKeyString)
+    await app.jwt.keys.add(ecdsa: publicKey, kid: "public")
   }
 
-  public func configurePrivateKey() throws {
+  public func configurePrivateKey() async throws {
     guard let oneLinePrivateKeyString = Environment.get("PRIVATE_KEY") else {
       throw RuntimeError("PRIVATE_KEY not defined")
     }
     let privateKeyString = oneLinePrivateKeyString.replacingOccurrences(of: "\\n", with: "\n")
-    let privateKey = try ECDSAKey.private(pem: privateKeyString)
-    app.jwt.signers.use(.es256(key: privateKey), kid: "private", isDefault: true)
+    
+    // ECDSA - es256
+    let privateKey = try ES256PrivateKey(pem: privateKeyString)
+    await app.jwt.keys.add(ecdsa: privateKey, kid: "private")
   }
 
 }
