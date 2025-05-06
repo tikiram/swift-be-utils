@@ -1,5 +1,8 @@
 import JWT
 import Vapor
+import Utils
+
+// TODO: use extensions instead of AppUtils
 
 public final class AppUtils {
 
@@ -24,7 +27,8 @@ public final class AppUtils {
     guard let corsOriginsString = Environment.get("CORS_ORIGINS") else {
       throw RuntimeError("CORS_ORIGINS not defined")
     }
-    let origins = corsOriginsString.split(separator: ",").map({ $0.trim() })
+    let origins = corsOriginsString.split(separator: ",")
+      .map({ $0.trimmingCharacters(in: .whitespacesAndNewlines) })
 
     let corsConfiguration = CORSMiddleware.Configuration(
       allowedOrigin: .any(origins),

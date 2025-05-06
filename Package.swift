@@ -4,15 +4,24 @@
 import PackageDescription
 
 let package = Package(
-  name: "shared-be-swift",
+  name: "be-utils-swift",
   platforms: [
     .macOS(.v13)
   ],
   products: [
     // Products define the executables and libraries a package produces, making them visible to other packages.
     .library(
-      name: "SharedBackend",
-      targets: ["SharedBackend"])
+      name: "VaporUtils",
+      targets: ["VaporUtils"]
+    ),
+    .library(
+      name: "Utils",
+      targets: ["Utils"]
+    ),
+    .library(
+      name: "DynamoUtils",
+      targets: ["DynamoUtils"]
+    )
   ],
   dependencies: [
     .package(url: "https://github.com/vapor/vapor.git", .upToNextMajor(from: "4.0.0")),
@@ -23,17 +32,25 @@ let package = Package(
     // Targets are the basic building blocks of a package, defining a module or a test suite.
     // Targets can depend on other targets in this package and products from dependencies.
     .target(
-      name: "SharedBackend",
+      name: "VaporUtils",
       dependencies: [
         .product(name: "Vapor", package: "vapor"),
         .product(name: "JWT", package: "jwt"),
-        // TODO: create different products with different dependencies
-        // this way we only import the "utils" we need without needless dependencies
-        .product(name: "AWSDynamoDB", package: "aws-sdk-swift"),
+        "Utils",
       ]
     ),
     .testTarget(
       name: "SharedBackendTests",
-      dependencies: ["SharedBackend"]),
+      dependencies: ["VaporUtils"]
+    ),
+    .target(
+      name: "Utils"
+    ),
+    .target(
+      name: "DynamoUtils",
+      dependencies: [
+        .product(name: "AWSDynamoDB", package: "aws-sdk-swift")
+      ]
+    ),
   ]
 )
