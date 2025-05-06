@@ -4,6 +4,9 @@ public func extractOptionalBool(_ attribute: DynamoDBClientTypes.AttributeValue?
   guard let attribute else {
     return nil
   }
+  guard hasContent(attribute) else {
+    return nil
+  }
   return try extractBool(attribute)
 }
 

@@ -6,6 +6,9 @@ public func extractOptionalDouble(_ attribute: DynamoDBClientTypes.AttributeValu
   guard let attribute else {
     return nil
   }
+  guard hasContent(attribute) else {
+    return nil
+  }
   return try extractDouble(attribute)
 }
 

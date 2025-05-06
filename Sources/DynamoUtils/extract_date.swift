@@ -10,6 +10,9 @@ public func extractOptionalDate(_ attribute: DynamoDBClientTypes.AttributeValue?
   guard let attribute else {
     return nil
   }
+  guard hasContent(attribute) else {
+    return nil
+  }
 
   let ms = try extractDouble(attribute)
 
