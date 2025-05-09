@@ -1,6 +1,6 @@
 import JWT
-import Vapor
 import Utils
+import Vapor
 
 // TODO: use extensions instead of AppUtils
 
@@ -51,7 +51,7 @@ public final class AppUtils {
     }
 
     let publicKeyString = oneLinePublicKeyString.replacingOccurrences(of: "\\n", with: "\n")
-    
+
     // ECDSA - es256
     let publicKey = try ES256PublicKey(pem: publicKeyString)
     await app.jwt.keys.add(ecdsa: publicKey, kid: "public")
@@ -62,7 +62,7 @@ public final class AppUtils {
       throw RuntimeError("PRIVATE_KEY not defined")
     }
     let privateKeyString = oneLinePrivateKeyString.replacingOccurrences(of: "\\n", with: "\n")
-    
+
     // ECDSA - es256
     let privateKey = try ES256PrivateKey(pem: privateKeyString)
     await app.jwt.keys.add(ecdsa: privateKey, kid: "private")
@@ -84,10 +84,10 @@ public func getCompanyStandardJSONDecoder() -> JSONDecoder {
   return decoder
 }
 
-extension Request {
+extension Application {
   public var environmentShortName: String {
     get throws {
-      switch self.application.environment {
+      switch self.environment {
       case .production:
         return "prod"
       case .development:
@@ -97,6 +97,14 @@ extension Request {
       default:
         throw RuntimeError("env not supported")
       }
+    }
+  }
+}
+
+extension Request {
+  public var environmentShortName: String {
+    get throws {
+      return try self.application.environmentShortName
     }
   }
 }
