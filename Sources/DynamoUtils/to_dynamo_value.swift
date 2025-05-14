@@ -33,5 +33,5 @@ public func toDynamoValue(_ date: Date?) -> DynamoDBClientTypes.AttributeValue {
   guard let date else {
     return .null(true)
   }
-  return .n((date.timeIntervalSince1970 * 1000).description)
+  return .s(date.ISO8601Format())
 }

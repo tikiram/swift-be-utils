@@ -14,9 +14,7 @@ public func extractOptionalDate(_ attribute: DynamoDBClientTypes.AttributeValue?
     return nil
   }
 
-  let ms = try extractDouble(attribute)
-
-  return Date(timeIntervalSince1970: TimeInterval(ms / 1000))
+  return try extractDate(attribute)
 }
 
 ///
@@ -28,8 +26,7 @@ public func extractDate(_ attribute: DynamoDBClientTypes.AttributeValue?) throws
     throw ExtractAttributeError.attributeIsNull
   }
 
-  let ms = try extractDouble(attribute)
-  return Date(timeIntervalSince1970: TimeInterval(ms / 1000))
+  return try extractDate(attribute)
 }
 
 ///
@@ -37,7 +34,11 @@ public func extractDate(_ attribute: DynamoDBClientTypes.AttributeValue?) throws
 /// - Throws:
 /// - Returns: Date
 public func extractDate(_ attribute: DynamoDBClientTypes.AttributeValue) throws -> Date {
-  let ms = try extractDouble(attribute)
-
-  return Date(timeIntervalSince1970: TimeInterval(ms / 1000))
+  let iso = try extractString(attribute)
+  let newFormatter = ISO8601DateFormatter()
+  let date = newFormatter.date(from: iso)
+  guard let date else {
+    throw ExtractAttributeError.invalidType
+  }
+  return date
 }

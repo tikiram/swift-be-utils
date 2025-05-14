@@ -21,7 +21,7 @@ let package = Package(
     .library(
       name: "DynamoUtils",
       targets: ["DynamoUtils"]
-    )
+    ),
   ],
   dependencies: [
     .package(url: "https://github.com/vapor/vapor.git", .upToNextMajor(from: "4.0.0")),
@@ -49,8 +49,12 @@ let package = Package(
     .target(
       name: "DynamoUtils",
       dependencies: [
-        .product(name: "AWSDynamoDB", package: "aws-sdk-swift")
+        .product(name: "AWSDynamoDB", package: "aws-sdk-swift"),
+        "SimpleCoder",
       ]
+    ),
+    .target(
+      name: "SimpleCoder"
     ),
   ]
 )
